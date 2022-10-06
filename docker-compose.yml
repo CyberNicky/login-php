@@ -1,0 +1,15 @@
+version: "3.6"
+
+services:
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+
+    volumes:
+      - ./db-data2:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=localhost
+    restart: always
