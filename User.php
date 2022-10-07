@@ -44,7 +44,7 @@ class User
     public function exists($username, $password)
     {
         $statement = $this->dbh->prepare(
-            'SELECT * from ' . $this->usersTableName . ' where username = :username'
+            'SELECT * from ' . $this->table . ' where username = :username'
         );
 
         if (false === $statement) {
