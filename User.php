@@ -1,5 +1,7 @@
 <?php
 
+include './utils/userValidation.php';
+
 class User
 {
     private $dbh;
@@ -23,16 +25,23 @@ class User
 
     public function create($username, $password)
     {
-        $password = password_hash($password, PASSWORD_BCRYPT);
+        if (!validationPassword($password)){
+            echo 'Senha inválida';
+            return;
+        };
 
+        $password = password_hash($password, PASSWORD_BCRYPT);
+        
         $statement = $this->dbh->prepare(
             'INSERT INTO ' . $this->table . '(username, password) VALUES (:username, :password)'
         );
+        
 
         if (false === $statement) {
             throw new Exception('Invalid prepare statement');
         }
-
+        
+        
         if (false === $statement->execute([
             ':username' => $username,
             ':password' => $password,
@@ -64,7 +73,10 @@ class User
         }
 
         return password_verify($password, $row['password']);
+
+        
     }
 }
+
 
 

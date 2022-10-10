@@ -2,7 +2,7 @@
 
 function connection()
 {
-    $databaseHost = '192.168.1.109';
+    $databaseHost = '192.168.11.20';
     $databaseUser = 'root';
     $databasePassword = 'localhost';
     $database = 'login';
