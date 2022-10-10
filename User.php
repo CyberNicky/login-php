@@ -25,10 +25,7 @@ class User
 
     public function create($username, $password)
     {
-        if (!validationPassword($password)){
-            echo 'Senha inválida';
-            return;
-        };
+      
 
         $password = password_hash($password, PASSWORD_BCRYPT);
         
@@ -48,6 +45,30 @@ class User
         ])) {
             throw new Exception(implode(' ', $statement->errorInfo()));
         }
+    }
+
+    public function usernameExists($username){
+        $statement = $this->dbh->prepare(
+            'SELECT * from ' . $this->table . ' where username = :username'
+        );
+
+        if (false === $statement) {
+            throw new Exception('Invalid prepare statement');
+        }
+
+        $result = $statement->execute([':username' => $username]);
+
+        if (false === $result) {
+            throw new Exception(implode(' ', $statement->errorInfo()));
+        }
+
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if (!is_array($row)) {
+            return false;
+        }
+
+        return true;
     }
 
     public function exists($username, $password)
